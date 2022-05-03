@@ -23,28 +23,30 @@ public class AnimationController : MonoBehaviour
 
     private void Update()
     {
-        if(inputScript._currentState == CharacterState.isDead)
-            CurrentAnimation = AnimationState.dead;
-
-        if (inputScript.isWallSliding)
+        if(inputScript.canMove)
         {
-            CurrentAnimation = AnimationState.hangWall;
-        }
-        else if (!hitAnimationStart)
-        {
-            if (inputScript._currentState == CharacterState.onJump)
-            {
-                CurrentAnimation = AnimationState.jump;
-            }
-            else if (inputScript._joystick.Horizontal != 0 || Input.GetButton("Horizontal"))
-            {
-                CurrentAnimation = AnimationState.go;
-            }
-            else CurrentAnimation = AnimationState.idle;
-        }
-        else if (inputScript._currentState != CharacterState.isDead)
-            CurrentAnimation = AnimationState.hit;
+            if (inputScript._currentState == CharacterState.isDead)
+                CurrentAnimation = AnimationState.dead;
 
+            if (inputScript.isWallSliding)
+            {
+                CurrentAnimation = AnimationState.hangWall;
+            }
+            else if (!hitAnimationStart)
+            {
+                if (inputScript._currentState == CharacterState.onJump)
+                {
+                    CurrentAnimation = AnimationState.jump;
+                }
+                else if (inputScript._joystick.Horizontal != 0 || Input.GetButton("Horizontal"))
+                {
+                    CurrentAnimation = AnimationState.go;
+                }
+                else CurrentAnimation = AnimationState.idle;
+            }
+            else if (inputScript._currentState != CharacterState.isDead)
+                CurrentAnimation = AnimationState.hit;
+        }
     }
 
     public enum AnimationState

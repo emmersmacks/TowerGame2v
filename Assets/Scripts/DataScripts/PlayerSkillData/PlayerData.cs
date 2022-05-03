@@ -22,7 +22,6 @@ namespace game.data.player
                 SetDefoltValuesData();
                 data = new PlayerDataStruct();
                 data = LoadData.Load(ref data, _path);
-                Debug.Log(data.speed);
             }
         }
 
@@ -46,7 +45,7 @@ namespace game.data.player
             data.money = 100;
             data.firstItemActive = null;
             data.secondItemActive = null;
-            data.Inventory = null;
+            data.Inventory = new List<IItem>();
             SaveData.Save(data, _path);
         }
     }
@@ -71,11 +70,11 @@ namespace game.data.player
         public int money;
 
         //active inventory
-        public ItemData firstItemActive;
-        public ItemData secondItemActive;
+        public IItem firstItemActive;
+        public IItem secondItemActive;
 
         //all inventory
-        public List<ItemData> Inventory;
+        public List<IItem> Inventory;
     }
 }
 

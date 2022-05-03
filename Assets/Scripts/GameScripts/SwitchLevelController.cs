@@ -41,17 +41,21 @@ public class SwitchLevelController : MonoBehaviour
 
     public async void ShowFloorPanel()
     {
+        var startPosition = floorPanel.transform.position;
+
         for (int count = 0; count < 20; count++)
         {
-            floorPanel.transform.position = new Vector2(floorPanel.transform.position.x, floorPanel.transform.position.y - 0.05f);
+            floorPanel.transform.position = new Vector2(floorPanel.transform.position.x, floorPanel.transform.position.y - 6f);
             await Task.Delay(30);
         }
         await Task.Delay(1500);
         for (int count = 0; count < 20; count++)
         {
-            floorPanel.transform.position = new Vector2(floorPanel.transform.position.x, floorPanel.transform.position.y + 0.05f);
+            floorPanel.transform.position = new Vector2(floorPanel.transform.position.x, floorPanel.transform.position.y + 6f);
             await Task.Delay(30);
         }
+
+        floorPanel.transform.position = startPosition;
     }
 
     public async UniTask ShowLoadScreen()
