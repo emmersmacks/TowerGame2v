@@ -40,7 +40,7 @@ public class BuyController : MonoBehaviour
     {
         if (playerData.data.money >= slot.price && playerData.data.money != 0)
         {
-            playerData.data.money -= 0;
+            playerData.data.money -= slot.price;
             playerData.data.Inventory.Add(slot.shopItem);
             Debug.Log("item buy");
         }

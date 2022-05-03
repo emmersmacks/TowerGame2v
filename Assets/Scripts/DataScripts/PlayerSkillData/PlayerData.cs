@@ -46,6 +46,7 @@ namespace game.data.player
             data.firstItemActive = null;
             data.secondItemActive = null;
             data.Inventory = new List<IItem>();
+            data.Inventory.Add(new HealthPotion());
             SaveData.Save(data, _path);
         }
     }
