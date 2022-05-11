@@ -1,83 +1,86 @@
 using UnityEngine.UI;
 using UnityEngine;
 using DG.Tweening;
-using System.Collections;
-using game.level.generation;
 using Cysharp.Threading.Tasks;
-using game.level.generation.factory;
 using System.Threading.Tasks;
+using Game.Level.Controllers;
+using TowerGame.Game.Level.Generation.Factory;
+using TowerGame.Game.Level.Generation;
 
-public class SwitchLevelController : MonoBehaviour
+namespace TowerGame.Game.Level.Controllers
 {
-    [SerializeField] Transform _characterTransform;
-    [SerializeField] Text _lvlCountText;
-    [SerializeField] Image _switchImage;
-    [SerializeField] GameObject floorPanel;
-
-    private LevelGenerateController _levelGenerateScript;
-    private GenerationSettingsCurve _generationSettingsCurve;
-    private LevelDataController _dataController;
-
-    private void Start()
+    public class SwitchLevelController : MonoBehaviour
     {
-        _levelGenerateScript = GetComponent<LevelGenerateController>();
-        _dataController = GetComponent<LevelDataController>();
-        _generationSettingsCurve = GetComponent<GenerationSettingsCurve>();
+        [SerializeField] Transform _characterTransform;
+        [SerializeField] Text _lvlCountText;
+        [SerializeField] Image _switchImage;
+        [SerializeField] GameObject floorPanel;
 
-        _generationSettingsCurve.GenerateDataUpdate(_dataController.CurrentFloor);
-    }
+        private LevelGenerateController _levelGenerateScript;
+        private GenerationSettingsCurve _generationSettingsCurve;
+        private LevelDataController _dataController;
 
-    public async void ReloadGenerateLevel()
-    {
-        await ShowLoadScreen();
-        SwitchLevelTextCount();
-        _levelGenerateScript.DeleteCreatedPrefab();
-        _generationSettingsCurve.GenerateDataUpdate(_dataController.CurrentFloor);
-        _levelGenerateScript.GenerateNewLevel();
-        _characterTransform.position = new Vector3(1.5f, 0.08897209f, -15);
-        await HideLoadScreen();
-        ShowFloorPanel();
-    }
-
-    public async void ShowFloorPanel()
-    {
-        var startPosition = floorPanel.transform.position;
-
-        for (int count = 0; count < 20; count++)
+        private void Start()
         {
-            floorPanel.transform.position = new Vector2(floorPanel.transform.position.x, floorPanel.transform.position.y - 6f);
-            await Task.Delay(30);
-        }
-        await Task.Delay(1500);
-        for (int count = 0; count < 20; count++)
-        {
-            floorPanel.transform.position = new Vector2(floorPanel.transform.position.x, floorPanel.transform.position.y + 6f);
-            await Task.Delay(30);
+            _levelGenerateScript = GetComponent<LevelGenerateController>();
+            _dataController = GetComponent<LevelDataController>();
+            _generationSettingsCurve = GetComponent<GenerationSettingsCurve>();
+            _generationSettingsCurve.GenerateDataUpdate(_dataController.CurrentFloor);
         }
 
-        floorPanel.transform.position = startPosition;
-    }
+        public async void ReloadGenerateLevel()
+        {
+            await ShowLoadScreen();
+            SwitchLevelTextCount();
+            _levelGenerateScript.DeleteCreatedPrefab();
+            _generationSettingsCurve.GenerateDataUpdate(_dataController.CurrentFloor);
+            _levelGenerateScript.GenerateNewLevel();
+            _characterTransform.position = new Vector3(1.5f, 0.08897209f, -15);
+            await HideLoadScreen();
+            await ShowFloorPanel();
+        }
 
-    public async UniTask ShowLoadScreen()
-    {
-        _switchImage.DOFade(1f, 0.5f);
-        await UniTask.Delay(1000);
-    }
+        public async UniTask ShowFloorPanel()
+        {
+            var startPosition = floorPanel.transform.position;
 
-    private async UniTask HideLoadScreen()
-    {
-        _switchImage.DOFade(0f, 0.5f);
-        await UniTask.Delay(1000);
-    }
+            for (int count = 0; count < 20; count++)
+            {
+                floorPanel.transform.position = new Vector2(floorPanel.transform.position.x, floorPanel.transform.position.y - 6f);
+                await Task.Delay(30);
+            }
+            await Task.Delay(1500);
+            for (int count = 0; count < 20; count++)
+            {
+                floorPanel.transform.position = new Vector2(floorPanel.transform.position.x, floorPanel.transform.position.y + 6f);
+                await Task.Delay(30);
+            }
 
-    private void SwitchLevelTextCount()
-    {
-        _dataController.CurrentFloor++;
-        _lvlCountText.text = "Floor " + _dataController.CurrentFloor.ToString();
-    }
+            floorPanel.transform.position = startPosition;
+        }
 
-    public void AddListener(ExitAreaScript exitScript)
-    {
-        exitScript.EndLevel += ReloadGenerateLevel;
+        public async UniTask ShowLoadScreen()
+        {
+            _switchImage.DOFade(1f, 0.5f);
+            await UniTask.Delay(1000);
+        }
+
+        private async UniTask HideLoadScreen()
+        {
+            _switchImage.DOFade(0f, 0.5f);
+            await UniTask.Delay(1000);
+        }
+
+        private void SwitchLevelTextCount()
+        {
+            _dataController.CurrentFloor++;
+            _lvlCountText.text = "Floor " + _dataController.CurrentFloor.ToString();
+        }
+
+        public void AddListener(ExitAreaScript exitScript)
+        {
+            exitScript.EndLevel += ReloadGenerateLevel;
+        }
     }
 }
+

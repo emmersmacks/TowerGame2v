@@ -1,21 +1,27 @@
-using System.Collections;
 using System.Collections.Generic;
+using TowerGame.Data.Items;
+using TowerGame.Data.Items.Potions;
+using TowerGame.Shop.Data;
 using UnityEngine;
 
-public class ShopSlotFiller : MonoBehaviour
+namespace TowerGame.Shop.Controllers
 {
-    List<IItem> shopItemsList;
-
-    private void Start()
+    public class ShopSlotFiller : MonoBehaviour
     {
-        shopItemsList = new List<IItem>();
-        shopItemsList.Add(new HealthPotion());
+        List<IItem> shopItemsList;
 
-        for (int i = 0; i <= shopItemsList.Count && i <= transform.childCount; i++)
+        private void Start()
         {
-            var slot = transform.GetChild(i);
-            Instantiate(Resources.Load(shopItemsList[i].PrefabLink, typeof(GameObject)), slot.transform.position, Quaternion.identity, slot);
-            slot.GetComponent<ShopSlot>().Init(shopItemsList[i].Price, shopItemsList[i]);
+            shopItemsList = new List<IItem>();
+            shopItemsList.Add(new HealthPotion());
+
+            for (int i = 0; i <= shopItemsList.Count && i <= transform.childCount; i++)
+            {
+                var slot = transform.GetChild(i);
+                Instantiate(Resources.Load(shopItemsList[i].PrefabLink, typeof(GameObject)), slot.transform.position, Quaternion.identity, slot);
+                slot.GetComponent<ShopSlot>().Init(shopItemsList[i].Price, shopItemsList[i]);
+            }
         }
     }
 }
+

@@ -1,8 +1,11 @@
-using System.Collections;
-using System.Collections.Generic;
+using TowerGame.Data.Items.Potions;
 using UnityEngine;
 
-public class ShopItem : MonoBehaviour
+namespace TowerGame.Shop.Data
 {
-    public Potion type;
+    public class ShopItem : MonoBehaviour
+    {
+        public Potion type;
+    }
 }
+

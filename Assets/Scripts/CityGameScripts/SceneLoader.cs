@@ -3,39 +3,43 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class SceneLoader : MonoBehaviour
+namespace TowerGame.UI
 {
-    [SerializeField] int sceneIndex;
-
-    private void Update()
+    public class SceneLoader : MonoBehaviour
     {
-        if(Input.touchCount > 0)
+        [SerializeField] int sceneIndex;
+
+        private void Update()
         {
-            if (Input.GetTouch(0).phase == TouchPhase.Began)
+            if (Input.touchCount > 0)
             {
-                var p = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
-                var hit = Physics2D.Raycast(p, Vector2.zero);
-                if (hit.collider.name == GetComponent<BoxCollider2D>().name)
+                if (Input.GetTouch(0).phase == TouchPhase.Began)
+                {
+                    var p = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
+                    var hit = Physics2D.Raycast(p, Vector2.zero);
+                    if (hit.collider.name == GetComponent<BoxCollider2D>().name)
+                    {
+                        LoadScene();
+                    }
+                }
+
+            }
+            if (Input.GetMouseButtonDown(0))
+            {
+                var ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+                var raycast = Physics2D.Raycast(ray, Vector2.zero);
+                if (raycast.collider.name == GetComponent<BoxCollider2D>().name)
                 {
                     LoadScene();
                 }
             }
-            
         }
-        if(Input.GetMouseButtonDown(0))
-        {
-            var ray = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            var raycast = Physics2D.Raycast(ray, Vector2.zero);
-            if(raycast.collider.name == GetComponent<BoxCollider2D>().name)
-            {
-                LoadScene();
-            }
-        }
-    }
 
-    public void LoadScene()
-    {
-        Debug.Log("1");
-        SceneManager.LoadScene(sceneIndex);
+        public void LoadScene()
+        {
+            Debug.Log("1");
+            SceneManager.LoadScene(sceneIndex);
+        }
     }
 }
+

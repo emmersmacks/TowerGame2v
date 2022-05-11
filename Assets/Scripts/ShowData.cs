@@ -1,7 +1,8 @@
 using UnityEngine.UI;
 using UnityEngine;
 using Zenject;
-using game.data.player;
+using Game.Data.Player;
+using TowerGame.Data.Player;
 
 public class ShowData : MonoBehaviour
 {

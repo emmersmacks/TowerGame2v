@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-namespace game.level.generation.factory
+namespace TowerGame.Game.Level.Generation.Factory
 {
     public class GenerationSettings
     {

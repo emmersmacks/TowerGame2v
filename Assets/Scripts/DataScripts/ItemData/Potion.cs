@@ -1,17 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using game.data.player;
+using Game.Data.Player;
+using TowerGame.Data.Player;
 
-[System.Serializable]
-public abstract class Potion : IItem
+namespace TowerGame.Data.Items.Potions
 {
-    public string Name { get; set; }
-    public string Description { get; set; }
-    public int Count { get; set; }
-    public IItem Type { get; set; }
-    public int Price { get; set; }
-    public string PrefabLink { get; set; }
+    [System.Serializable]
+    public abstract class Potion : IItem
+    {
+        public string Name { get; set; }
+        public string Description { get; set; }
+        public int Count { get; set; }
+        public IItem Type { get; set; }
+        public int Price { get; set; }
+        public string PrefabLink { get; set; }
 
-    public abstract void ActivatePotion(PlayerDataStruct data);
+        public abstract void ActivatePotion(PlayerDataStruct data);
+    }
 }
+

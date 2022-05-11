@@ -1,9 +1,10 @@
 ﻿using UnityEngine;
-using game.level.generation.factory;
-using System;
 using System.Collections.Generic;
+using TowerGame.Game.Level.Generation.MazeControllers;
+using TowerGame.Game.Level.Generation.Factory;
+using TowerGame.Game.Level.Controllers;
 
-namespace game.level.generation
+namespace TowerGame.Game.Level.Generation
 {
     public class PrefabsSpawner : MonoBehaviour
     {
@@ -12,9 +13,9 @@ namespace game.level.generation
 
         private List<GameObject> instantiatedMazePlatforms = new List<GameObject>();
         private Vector3 CellSize = new Vector3(3, 3, 0);
-        private Maze maze;
+        private MazeControllers.Maze maze;
 
-        public Maze GenerateMaze()
+        public MazeControllers.Maze GenerateMaze()
         {
             MazeGenerator generator = new MazeGenerator();
             maze = generator.GenerateMaze(GenerationSettings.columnNumber + 1, GenerationSettings.rowNumber + 1);

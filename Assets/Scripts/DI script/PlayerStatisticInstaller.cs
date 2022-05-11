@@ -1,8 +1,8 @@
 using UnityEngine;
 using Zenject;
-using game.data.player.statistic;
+using Game.Data.Player.Statistic;
 
-namespace game.data.player.installer
+namespace Game.Data.Player.Installer
 {
     public class PlayerStatisticInstaller : MonoInstaller
     {

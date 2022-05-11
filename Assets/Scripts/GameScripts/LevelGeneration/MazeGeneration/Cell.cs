@@ -1,7 +1,10 @@
 ﻿using UnityEngine;
 
-public class Cell : MonoBehaviour
+namespace TowerGame.Game.Level.Generation.MazeControllers
 {
-    public GameObject WallLeft;
-    public GameObject WallBottom;
+    public class Cell : MonoBehaviour
+    {
+        public GameObject WallLeft;
+        public GameObject WallBottom;
+    }
 }

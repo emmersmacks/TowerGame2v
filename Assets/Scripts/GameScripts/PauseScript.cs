@@ -1,19 +1,22 @@
 using UnityEngine;
 
-
-public class PauseScript : MonoBehaviour
+namespace TowerGame.Game.Level.UI
 {
-    [SerializeField] private GameObject _pausePanel;
-
-    public void StartPause()
+    public class PauseScript : MonoBehaviour
     {
-        Time.timeScale = 0;
-        _pausePanel.SetActive(true);
-    }
+        [SerializeField] private GameObject _pausePanel;
 
-    public void EndPause()
-    {
-        Time.timeScale = 1;
-        _pausePanel.SetActive(false);
+        public void StartPause()
+        {
+            Time.timeScale = 0;
+            _pausePanel.SetActive(true);
+        }
+
+        public void EndPause()
+        {
+            Time.timeScale = 1;
+            _pausePanel.SetActive(false);
+        }
     }
 }
+

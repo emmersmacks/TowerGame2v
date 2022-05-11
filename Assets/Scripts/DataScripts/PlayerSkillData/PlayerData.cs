@@ -1,14 +1,15 @@
 using System.Collections.Generic;
 using UnityEngine;
-using game.data.controller.binary;
+using Game.Data.Controller.Binary;
 using System.IO;
+using TowerGame.Data.Items;
 
-namespace game.data.player
+namespace TowerGame.Data.Player
 {
     public class PlayerData : MonoBehaviour
     {
         public PlayerDataStruct data;
-        private string _path = "/PlayerData.bs";
+        private string _path = "/Saves/PlayerData.bs";
 
         private void Start()
         {
@@ -42,11 +43,10 @@ namespace game.data.player
             data.criticalDamage = 25;
             data.floorCount = 0;
             data.souls = 0;
-            data.money = 100;
+            data.money = 500;
             data.firstItemActive = null;
             data.secondItemActive = null;
             data.Inventory = new List<IItem>();
-            data.Inventory.Add(new HealthPotion());
             SaveData.Save(data, _path);
         }
     }
@@ -75,6 +75,7 @@ namespace game.data.player
         public IItem secondItemActive;
 
         //all inventory
+        [SerializeField]
         public List<IItem> Inventory;
     }
 }

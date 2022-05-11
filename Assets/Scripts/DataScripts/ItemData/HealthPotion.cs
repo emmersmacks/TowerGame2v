@@ -1,25 +1,30 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using game.data.player;
+using Game.Data.Player;
+using TowerGame.Data.Player;
 
-[System.Serializable]
-public class HealthPotion : Potion
+namespace TowerGame.Data.Items.Potions
 {
-    private int amountHealthAdded;
-
-    public HealthPotion()
+    [System.Serializable]
+    public class HealthPotion : Potion
     {
-        Name = "Health potion";
-        Description = "Restores" + amountHealthAdded + "health";
-        Count = 1;
-        Price = 100;
-        amountHealthAdded = 25;
-        PrefabLink = "Prefabs/Items/PotionHealth";
-    }
+        private int amountHealthAdded;
 
-    public override void ActivatePotion(PlayerDataStruct data)
-    {
-        data.hp += amountHealthAdded;
+        public HealthPotion()
+        {
+            Name = "Health potion";
+            Description = "Restores" + amountHealthAdded + "health";
+            Count = 1;
+            Price = 100;
+            amountHealthAdded = 25;
+            PrefabLink = "Prefabs/Items/PotionHealth";
+        }
+
+        public override void ActivatePotion(PlayerDataStruct data)
+        {
+            data.hp += amountHealthAdded;
+        }
     }
 }
+

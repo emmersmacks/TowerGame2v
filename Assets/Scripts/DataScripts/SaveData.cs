@@ -2,7 +2,7 @@ using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 using UnityEngine;
 
-namespace game.data.controller.binary
+namespace Game.Data.Controller.Binary
 {
     public class SaveData
     {

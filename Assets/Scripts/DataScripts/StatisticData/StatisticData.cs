@@ -1,16 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using game.data.controller.binary;
+using Game.Data.Controller.Binary;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace game.data.player.statistic
+namespace Game.Data.Player.Statistic
 {
     public class StatisticData : MonoBehaviour
     {
         public StaticticDataStruct data;
-        private string _path = "/StatisticData.bs";
+        private string _path = "/Saves/Statistic.bs";
 
 
         private void Start()
@@ -38,11 +38,7 @@ namespace game.data.player.statistic
         public void SetDefoltValuesData()
         {
             data = new StaticticDataStruct();
-            data.souls = 0;
-            data.money = 0;
-            data.floor = 0;
-            data.monsterDeadCount = 0;
-            data.isNoFirstGameStart = true;
+            data.monsterKillCount = 0;
             SaveData.Save(data, _path);
         }
     }
@@ -50,11 +46,7 @@ namespace game.data.player.statistic
     [System.Serializable]
     public class StaticticDataStruct
     {
-        public int souls;
-        public int money;
-        public int floor;
-        public int monsterDeadCount;
-        public bool isNoFirstGameStart;
+        public int monsterKillCount;
     }
 }
 

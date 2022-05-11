@@ -1,17 +1,20 @@
-using System.Collections;
-using System.Collections.Generic;
+using TowerGame.Data.Items;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ShopSlot : MonoBehaviour
+namespace TowerGame.Shop.Data
 {
-    public IItem shopItem;
-    public int price;
-    public Text priceText;
-
-    public void Init(int price, IItem type)
+    public class ShopSlot : MonoBehaviour
     {
-        priceText.text = price.ToString();
-        this.price = price;
+        public IItem shopItem;
+        public int price;
+        public Text priceText;
+
+        public void Init(int price, IItem type)
+        {
+            priceText.text = price.ToString();
+            this.price = price;
+        }
     }
 }
+

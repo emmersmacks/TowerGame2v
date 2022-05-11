@@ -1,51 +1,53 @@
-using System.Collections;
 using UnityEngine;
 using Zenject;
-using game.data.player;
 using System.Threading.Tasks;
+using TowerGame.Data.Player;
 
-
-public class SwordAttack : MonoBehaviour
+namespace TowerGame.Game.Level.Units.Character
 {
-    [SerializeField] private GameObject _hitBox;
-
-    [Inject] PlayerData playerData;
-
-    private SpriteRenderer _sprite;
-    private AudioSource _swordSound;
-    private AnimationController _animationController;
-   
-
-    private void Start()
+    public class SwordAttack : MonoBehaviour
     {
-        _sprite = GetComponentInChildren<SpriteRenderer>();
-        _swordSound = GetComponent<AudioSource>();
-        _animationController = GetComponent<AnimationController>();
-    }
+        [SerializeField] private GameObject _hitBox;
 
-    public async void Attack()
-    {
-        if(_animationController.hitAnimationStart == false)
+        [Inject] private PlayerData _data;
+
+        private SpriteRenderer _sprite;
+        private AudioSource _swordSound;
+        private AnimationController _animationController;
+
+
+        private void Start()
         {
-            _swordSound.enabled = true;
-            _animationController.hitAnimationStart = true;
+            _sprite = GetComponentInChildren<SpriteRenderer>();
+            _swordSound = GetComponent<AudioSource>();
+            _animationController = GetComponent<AnimationController>();
+        }
 
-            var hitBoxInst = Instantiate(_hitBox, new Vector2(transform.position.x, transform.position.y + 1), HitBoxRotation(), transform);
-            hitBoxInst.GetComponent<HitBoxScript>().damage = (int)playerData.data.damage;
+        public async void Attack()
+        {
+            if (_animationController.hitAnimationStart == false)
+            {
+                _swordSound.enabled = true;
+                _animationController.hitAnimationStart = true;
 
-            await Task.Delay((int)(playerData.data.attackSpeed * 1000));
+                var hitBoxInst = Instantiate(_hitBox, new Vector2(transform.position.x, transform.position.y + 1), HitBoxRotation(), transform);
+                hitBoxInst.GetComponent<HitColliderScript>().damage = (int)_data.data.damage;
 
-            Destroy(hitBoxInst);
-            _animationController.hitAnimationStart = false;
-            _swordSound.enabled = false;
+                await Task.Delay((int)(_data.data.attackSpeed * 1000));
+
+                Destroy(hitBoxInst);
+                _animationController.hitAnimationStart = false;
+                _swordSound.enabled = false;
+            }
+        }
+
+        public Quaternion HitBoxRotation()
+        {
+            if (_sprite.flipX)
+                return Quaternion.Euler(new Vector3(0, 180, 0));
+            else
+                return Quaternion.Euler(new Vector3(0, 0, 0));
         }
     }
-
-    public Quaternion HitBoxRotation()
-    {
-        if (_sprite.flipX)
-            return Quaternion.Euler(new Vector3(0, 180, 0));
-        else
-            return Quaternion.Euler(new Vector3(0, 0, 0));
-    }
 }
+

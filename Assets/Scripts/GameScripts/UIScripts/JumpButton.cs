@@ -1,28 +1,30 @@
-using System.Collections;
-using System.Collections.Generic;
+using TowerGame.Game.Level.Units.Character;
 using UnityEngine;
 
-public class JumpButton : MonoBehaviour
+namespace TowerGame.Game.Level.UI
 {
-    [SerializeField]
-    private ControllerAction _actionScript;
-
-    void Update()
+    public class JumpButton : MonoBehaviour
     {
-        if (Input.touchCount > 0)
+        [SerializeField] private ControllerAction _actionScript;
+
+        void Update()
         {
-            if (Input.touches[0].phase == TouchPhase.Began)
+            if (Input.touchCount > 0)
             {
-                Ray ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
-                RaycastHit hit;
-                if (Physics.Raycast(ray, out hit))
+                if (Input.touches[0].phase == TouchPhase.Began)
                 {
-                    if (hit.collider.GetComponent<JumpButton>())
+                    Ray ray = Camera.main.ScreenPointToRay(Input.touches[0].position);
+                    RaycastHit hit;
+                    if (Physics.Raycast(ray, out hit))
                     {
-                        _actionScript.Jump();
+                        if (hit.collider.GetComponent<JumpButton>())
+                        {
+                            _actionScript.Jump();
+                        }
                     }
                 }
             }
         }
     }
 }
+

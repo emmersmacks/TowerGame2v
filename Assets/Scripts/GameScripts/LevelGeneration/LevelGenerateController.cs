@@ -1,9 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using game.level.generation.factory;
+using TowerGame.Game.Level.Generation.Factory;
+using TowerGame.Game.Level.Generation.MazeControllers;
+using TowerGame.Game.Level.Generation.Background;
 
-namespace game.level.generation
+namespace TowerGame.Game.Level.Generation
 {
     public class LevelGenerateController : MonoBehaviour
     {
@@ -23,7 +25,7 @@ namespace game.level.generation
 
         public void GenerateNewLevel()
         {
-            Maze maze = _mazeSpawner.GenerateMaze();
+            var maze = _mazeSpawner.GenerateMaze();
             _mazeGeneratedMap = GeneratorFactory.ProduceGenerate(GenerateFactoryType.Chest).Generate(maze.cells);
             _mazeGeneratedMap = GeneratorFactory.ProduceGenerate(GenerateFactoryType.FlyingEye).Generate(_mazeGeneratedMap);
             _mazeGeneratedMap = GeneratorFactory.ProduceGenerate(GenerateFactoryType.Torch).Generate(_mazeGeneratedMap);

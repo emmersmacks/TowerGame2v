@@ -2,117 +2,122 @@ using System;
 using UnityEngine;
 using System.Threading.Tasks;
 
-public class CharacterInputController : Unit
+namespace TowerGame.Game.Level.Units.Character
 {
-    [Header("Input Controllers")]
-    public Joystick _joystick;
-
-    [Header("Wall jump")]
-    public float wallJumpTime;
-    public float wallSlideSpeed;
-    public float wallDistance;
-    public bool isWallSliding;
-    RaycastHit2D wallCheckHit;
-
-    [Header("Grounded")]
-    public LayerMask groundLayer;
-
-    private Vector3 _moveDirection;
-    public CharacterState _currentState;
-    private ControllerAction _actionController;
-
-    public event Action OnDeadCharacter = default;
-
-    public bool canMove;
-
-    private void Start()
+    public class CharacterInputController : Unit
     {
-        _currentState = CharacterState.onGround;
-        _actionController = GetComponent<ControllerAction>();
-        canMove = true;
-    }
+        [Header("Input Controllers")]
+        [SerializeField] public Joystick joystick;
 
-    private void Update()
-    {
-        _actionController.FlipSprite(_moveDirection);
+        [Header("Wall jump")]
+        [SerializeField] private float _wallJumpTime;
+        [SerializeField] private float _wallSlideSpeed;
+        [SerializeField] private float _wallDistance;
+        [SerializeField] public bool _isWallSliding;
+        [SerializeField] private RaycastHit2D _wallCheckHit;
 
-        if(canMove)
+        [Header("Grounded")]
+        [SerializeField] public LayerMask groundLayer;
+
+        public CharacterState currentState;
+        public bool canMove;
+
+        private Vector3 _moveDirection;
+        private ControllerAction _actionController;
+
+        public event Action OnDeadCharacter = default;
+
+        private void Start()
         {
-            if (Input.GetKeyDown(KeyCode.W))
+            currentState = CharacterState.onGround;
+            _actionController = GetComponent<ControllerAction>();
+            canMove = true;
+        }
+
+        private void Update()
+        {
+            _actionController.FlipSprite(_moveDirection);
+
+            if (canMove)
             {
-                if (_currentState == CharacterState.onGround || isWallSliding)
+                if (Input.GetKeyDown(KeyCode.W))
                 {
-                    _actionController.Jump();
-                    _currentState = CharacterState.onJump;
+                    if (currentState == CharacterState.onGround || _isWallSliding)
+                    {
+                        _actionController.Jump();
+                        currentState = CharacterState.onJump;
+                    }
+                }
+
+                if (_wallCheckHit && currentState != CharacterState.onGround && _moveDirection.x != 0)
+                    _isWallSliding = true;
+                else
+                    _isWallSliding = false;
+            }
+        }
+
+        private void FixedUpdate()
+        {
+            if (canMove)
+            {
+                if (currentState != CharacterState.onWall)
+                {
+                    _moveDirection = transform.right * joystick.Horizontal;
+                    _actionController.MoveHorizontal(_moveDirection);
+                }
+
+                if (currentState != CharacterState.onWall && Input.GetButton("Horizontal"))
+                {
+                    _moveDirection = transform.right * Input.GetAxis("Horizontal");
+                    _actionController.MoveHorizontal(_moveDirection);
+                }
+
+                //WallJump
+                if (_moveDirection.x > 0)
+                {
+                    _wallCheckHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1), new Vector2(_wallDistance, 0), _wallDistance, groundLayer);
+
+                }
+                else
+                {
+                    _wallCheckHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1), new Vector2(-_wallDistance, 0), _wallDistance, groundLayer);
+                }
+
+                if (_isWallSliding)
+                {
+                    _actionController.HangWall(_wallSlideSpeed);
                 }
             }
-
-            if (wallCheckHit && _currentState != CharacterState.onGround && _moveDirection.x != 0)
-                isWallSliding = true;
-            else
-                isWallSliding = false;
         }
-    }
 
-    private void FixedUpdate()
-    {
-        if(canMove)
+        public async void FreazePlayer(float timePerSeconds)
         {
-            if (_currentState != CharacterState.onWall)
-            {
-                _moveDirection = transform.right * _joystick.Horizontal;
-                _actionController.MoveHorizontal(_moveDirection);
-            }
+            var time = timePerSeconds * 1000f;
+            canMove = false;
+            await Task.Delay((int)time);
+            canMove = true;
+        }
 
-            if (_currentState != CharacterState.onWall && Input.GetButton("Horizontal"))
-            {
-                _moveDirection = transform.right * Input.GetAxis("Horizontal");
-                _actionController.MoveHorizontal(_moveDirection);
-            }
-
-            //WallJump
-            if (_moveDirection.x > 0)
-            {
-                wallCheckHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1), new Vector2(wallDistance, 0), wallDistance, groundLayer);
-
-            }
-            else
-            {
-                wallCheckHit = Physics2D.Raycast(new Vector2(transform.position.x, transform.position.y + 1), new Vector2(-wallDistance, 0), wallDistance, groundLayer);
-            }
-
-            if (isWallSliding)
-            {
-                _actionController.HangWall(wallSlideSpeed);
-            }
+        public override void DeadAction()
+        {
+            if (currentState != CharacterState.isDead)
+                OnDeadCharacter();
+            currentState = CharacterState.isDead;
         }
     }
 
-    public async void FreazePlayer(float timePerSeconds)
-    {
-        var time = timePerSeconds * 1000f;
-        canMove = false;
-        await Task.Delay((int)time);
-        canMove = true;
-    }
 
-    public override void DeadAction()
+    public enum CharacterState
     {
-        if (_currentState != CharacterState.isDead)
-            OnDeadCharacter();
-        _currentState = CharacterState.isDead;
+        onGround,
+        onWall,
+        onJump,
+        onHit,
+        isDead,
+        freeze,
     }
 }
 
-
-public enum CharacterState
-{
-    onGround,
-    onWall,
-    onJump,
-    onHit,
-    isDead,
-}
 
 
 

@@ -2,60 +2,64 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class AnimationController : MonoBehaviour
+namespace TowerGame.Game.Level.Units.Character
 {
-    public bool hitAnimationStart;
-    protected Animator animator;
-    private CharacterInputController inputScript;
-
-    protected AnimationState CurrentAnimation
+    public class AnimationController : MonoBehaviour
     {
-        get { return (AnimationState)animator.GetInteger("State"); }
-        set { animator.SetInteger("State", (int)value); }
-    }
+        public bool hitAnimationStart;
+        protected Animator animator;
+        private CharacterInputController _inputScript;
 
-    private void Start()
-    {
-        inputScript = GetComponent<CharacterInputController>();
-        animator = GetComponentInChildren<Animator>();
-        hitAnimationStart = false;
-    }
-
-    private void Update()
-    {
-        if(inputScript.canMove)
+        protected AnimationState CurrentAnimation
         {
-            if (inputScript._currentState == CharacterState.isDead)
-                CurrentAnimation = AnimationState.dead;
+            get { return (AnimationState)animator.GetInteger("State"); }
+            set { animator.SetInteger("State", (int)value); }
+        }
 
-            if (inputScript.isWallSliding)
+        private void Start()
+        {
+            _inputScript = GetComponent<CharacterInputController>();
+            animator = GetComponentInChildren<Animator>();
+            hitAnimationStart = false;
+        }
+
+        private void Update()
+        {
+            if (_inputScript.canMove)
             {
-                CurrentAnimation = AnimationState.hangWall;
-            }
-            else if (!hitAnimationStart)
-            {
-                if (inputScript._currentState == CharacterState.onJump)
+                if (_inputScript.currentState == CharacterState.isDead)
+                    CurrentAnimation = AnimationState.dead;
+
+                if (_inputScript._isWallSliding)
                 {
-                    CurrentAnimation = AnimationState.jump;
+                    CurrentAnimation = AnimationState.hangWall;
                 }
-                else if (inputScript._joystick.Horizontal != 0 || Input.GetButton("Horizontal"))
+                else if (!hitAnimationStart)
                 {
-                    CurrentAnimation = AnimationState.go;
+                    if (_inputScript.currentState == CharacterState.onJump)
+                    {
+                        CurrentAnimation = AnimationState.jump;
+                    }
+                    else if (_inputScript.joystick.Horizontal != 0 || Input.GetButton("Horizontal"))
+                    {
+                        CurrentAnimation = AnimationState.go;
+                    }
+                    else CurrentAnimation = AnimationState.idle;
                 }
-                else CurrentAnimation = AnimationState.idle;
+                else if (_inputScript.currentState != CharacterState.isDead)
+                    CurrentAnimation = AnimationState.hit;
             }
-            else if (inputScript._currentState != CharacterState.isDead)
-                CurrentAnimation = AnimationState.hit;
+        }
+
+        public enum AnimationState
+        {
+            idle,
+            go,
+            jump,
+            hit,
+            hangWall,
+            dead,
         }
     }
-
-    public enum AnimationState
-    {
-        idle,
-        go,
-        jump,
-        hit,
-        hangWall,
-        dead,
-    }
 }
+

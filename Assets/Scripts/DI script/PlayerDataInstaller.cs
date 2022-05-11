@@ -1,8 +1,9 @@
 using UnityEngine;
 using Zenject;
-using game.data.player;
+using Game.Data.Player;
+using TowerGame.Data.Player;
 
-namespace game.data.player.installer
+namespace Game.Data.Player.Installer
 {
     public class PlayerDataInstaller : MonoInstaller
     {

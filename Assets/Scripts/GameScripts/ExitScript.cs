@@ -1,15 +1,18 @@
 using UnityEngine.SceneManagement;
 using UnityEngine;
 
-
-public class ExitScript : MonoBehaviour
+namespace Game.Level.Controllers
 {
-    [SerializeField] private LevelDataController _dataController;
-
-    public void ExitInMenu()
+    public class ExitScript : MonoBehaviour
     {
-        Time.timeScale = 1;
-        _dataController.SaveData();
-        SceneManager.LoadScene(0, LoadSceneMode.Single);
+        [SerializeField] private LevelDataController _dataController;
+
+        public void ExitInMenu()
+        {
+            Time.timeScale = 1;
+            _dataController.SaveData();
+            SceneManager.LoadScene(0, LoadSceneMode.Single);
+        }
     }
 }
+

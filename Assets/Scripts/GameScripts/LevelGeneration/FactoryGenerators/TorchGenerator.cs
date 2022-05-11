@@ -1,23 +1,24 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using TowerGame.Game.Level.Generation.MazeControllers;
 
 
-namespace game.level.generation.factory
+namespace TowerGame.Game.Level.Generation.Factory
 {
     public class TorchGenerator : IGenerator
     {
-        public MazeGeneratorCell[,] Generate(MazeGeneratorCell[,] mazeMap)
+        public MazeGeneratorCell[,] Generate(MazeGeneratorCell[,] afforablePosition)
         {
-            var afforablePos = GetAfforablePosition(mazeMap);
-            for(int i = 0; i < afforablePos.Count; i++ )
+            var afforablePos = GetAfforablePosition(afforablePosition);
+            for (int i = 0; i < afforablePos.Count; i++)
             {
                 var pos = afforablePos[i];
-                mazeMap[pos.X, pos.Y].backgroundType = PrefabsType.torch;
+                afforablePosition[pos.X, pos.Y].backgroundType = PrefabsType.torch;
                 Debug.Log("Generate torch");
             }
-
-            return mazeMap;
+        
+            return afforablePosition;
         }
 
         private List<MazeGeneratorCell> GetAfforablePosition(MazeGeneratorCell[,] mazeMap)

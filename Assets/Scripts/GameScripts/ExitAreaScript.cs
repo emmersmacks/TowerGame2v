@@ -4,47 +4,52 @@ using UnityEngine;
 using System;
 using System.Threading.Tasks;
 using System.Linq;
+using TowerGame.Game.Level.Units.Character;
 
-public class ExitAreaScript : MonoBehaviour
+namespace TowerGame.Game.Level.Controllers
 {
-    public event Action EndLevel;
-    Animator animator;
-    bool isAnimationStart;
-
-    public void Start()
+    public class ExitAreaScript : MonoBehaviour
     {
-        animator = GetComponent<Animator>();
-        isAnimationStart = false;
-    }
+        public event Action EndLevel;
+        Animator animator;
+        bool isAnimationStart;
 
-    public async void OnTriggerEnter2D(Collider2D collision)
-    {
-        if(collision.gameObject.GetComponent<CharacterInputController>() && !isAnimationStart)
+        public void Start()
         {
-            isAnimationStart = true;
-            collision.GetComponent<CharacterInputController>().canMove = false;
-            SpawnPlayerInTeleport(collision.gameObject);
-            await StartAnimation();
-            collision.GetComponent<CharacterInputController>().canMove = true;
-            EndLevel();
+            animator = GetComponent<Animator>();
+            isAnimationStart = false;
         }
-        
-    }
 
-    public async Task StartAnimation()
-    {
-        if(animator != null)
+        public async void OnTriggerEnter2D(Collider2D collision)
         {
-            animator.Play("LightPortalAnimation", 0);
-            await Task.Delay(2000);
+            if (collision.gameObject.GetComponent<CharacterInputController>() && !isAnimationStart)
+            {
+                isAnimationStart = true;
+                collision.GetComponent<CharacterInputController>().canMove = false;
+                SpawnPlayerInTeleport(collision.gameObject);
+                await StartAnimation();
+                collision.GetComponent<CharacterInputController>().canMove = true;
+                EndLevel();
+            }
 
         }
-    }
 
-    public void SpawnPlayerInTeleport(GameObject player)
-    {
-        var playerPosition = new Vector2(transform.position.x, transform.position.y - 1f);
-        player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
-        player.transform.position = playerPosition;
+        public async Task StartAnimation()
+        {
+            if (animator != null)
+            {
+                animator.Play("LightPortalAnimation", 0);
+                await Task.Delay(2000);
+
+            }
+        }
+
+        public void SpawnPlayerInTeleport(GameObject player)
+        {
+            var playerPosition = new Vector2(transform.position.x, transform.position.y - 1f);
+            player.GetComponent<Rigidbody2D>().velocity = Vector2.zero;
+            player.transform.position = playerPosition;
+        }
     }
 }
+

@@ -1,10 +1,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using game.level.generation;
+using TowerGame.Game.Level.Generation;
 
-public class PrefabInform : MonoBehaviour
+namespace TowerGame.Game.Level.Generation.Factory
 {
-    [SerializeField]
-    public PrefabsType prefabType;
+    public class PrefabInform : MonoBehaviour
+    {
+        [SerializeField]
+        public PrefabsType prefabType;
+    }
 }
+
